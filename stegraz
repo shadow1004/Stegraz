@@ -1,0 +1,152 @@
+#!/bin/bash
+
+MAN_PAGE="stegraz.1"
+
+if [ "$1" == "-h" ] ||  [ "$1" == "--help" ] ||[ "$1" == "-help" ] || [ $# -lt 1 ]; then
+    man stegraz
+  if ! [ -f "/usr/share/man/man1/$MAN_PAGE" ]; then
+    echo "Please check the GitHub repository to configure the manual page for stegraz : https://github.com/shadow1004/ ."
+    exit 1
+    fi
+  exit 0  
+fi
+
+if [ "$1" == "-b" ]; then
+  if [ -z "$2" ]; then
+    echo "Error: No string provided for decryption."
+    exit 1
+  fi
+# Create a temporary file with a unique name
+output_file=$(mktemp)
+
+echo "Here's your cipher decrypted in:" >> "$output_file" 
+# Base16 (Hex)
+echo "- base16:" $(echo "$2" | xxd -p -r 2>/dev/null) >> "$output_file" 
+echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
+# Base32
+echo "- base32:" $(echo "$2" | base32 -d 2>/dev/null ) >> "$output_file" 
+echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
+# Base36
+echo "- base36:" $(echo "$2" | tr '[:upper:]' '[:lower:]' | tr -d '\n' | bc 2>/dev/null) >> "$output_file" 
+echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
+# Base62
+echo "- base62:" $(echo "$2" | base62 -d 2>/dev/null) >> "$output_file"
+echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
+# Base64
+echo "- base64:" $(echo "$2" | base64 -d 2>/dev/null) >> "$output_file" 
+echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
+# Base85
+echo "- base85:" $(echo "$2" | base85 -d 2>/dev/null) >> "$output_file" 
+echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
+# Base91
+echo "- base91:" $(echo "$2" | base91 -d 2>/dev/null) >> "$output_file"
+echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
+
+echo "Decryption results saved in file: $output_file"
+
+
+exit 0
+fi
+
+FILE=$1
+GREP_ARG=$2
+CC=0
+# If the file is an image, open it with eog
+file_extension="${FILE##*.}"
+image_extensions=("png" "jpg" "jpeg" "gif" "bmp")
+if [[ " ${image_extensions[@]} " =~ " $file_extension " ]]; then
+  echo -e "\e[36mOpening the image file with eog ...\e[0m"
+  eog "$FILE"
+  echo -e "\e[35m--------------------------------------------------\e[0m"
+fi
+ read -rsp $'Press Enter to run ==> "file" || Type "s + Enter " to skip & go to ==> "strings"  ...\n' key
+  if [[ "$key" == "s" ]]; then
+   CC=1
+
+  fi
+
+if [[ "$CC" != 1 ]]; then
+# Determine the file type using the file command
+echo -e "\e[36mDetermining file type of $FILE ...\e[0m"
+file "$FILE"
+echo -e "\e[35m--------------------------------------------------\e[0m"
+echo -e "\e[35mNext feature: strings \e[0m"
+fi 
+CC=0
+read -rsp $'Press Enter to run ==> "strings" || Type "s + Enter " to skip & go to ==> "Exiftools" \n' key
+ if [[ "$key" == "s" ]]; then
+   CC=1
+  fi
+
+if [[ "$CC" != 1 ]]; then
+# Extract strings from the file and filter using grep
+if [ -z "$GREP_ARG" ]; then
+  echo -e "\e[36mExtracting strings from $FILE ...\e[0m"
+  strings "$FILE"
+else
+  echo -e "\e[36mExtracting strings from $FILE and filtering using grep ($GREP_ARG) ...\e[0m"
+  strings "$FILE" | grep "$GREP_ARG"
+fi
+echo -e "\e[35m--------------------------------------------------\e[0m"
+fi
+CC=0
+read -rsp  $'Press Enter to run ==> "Exiftools" || Type "s + Enter " to skip & go to ==> "binwalk" ...\n' key
+ if [[ "$key" == "s" ]]; then
+   CC=1
+  fi
+
+
+if [[ "$CC" != "1" ]]; then
+# Extract metadata using exiftool
+echo -e "\e[36mExtracting metadata from $FILE ...\e[0m"
+exiftool "$FILE"
+echo -e "\e[35m--------------------------------------------------\e[0m"
+fi
+CC=0
+read -rsp $'Press Enter to run ==> "binwalk" || Type "s + Enter " to skip & go to ==> "Hexedit" ...\n' key
+ if [[ "$key" == "s" ]]; then
+   CC=1
+  fi
+
+if [[ "$CC" != "1" ]]; then
+# Extract embedded files using binwalk
+echo -e "\e[36mExtracting embedded files from $FILE ...\e[0m"
+binwalk -e "$FILE"
+echo -e "\e[35m--------------------------------------------------\e[0m"
+fi
+CC=0
+read -rsp $'Press Enter to run ==> "Hexedit" || Type "s + Enter " to skip & go to ==> "Unzip"  ...\n' key
+ if [[ "$key" == "s" ]]; then
+   CC=1
+  fi
+
+if [[ "$CC" != "1" ]]; then
+# Edit the file in hexadecimal mode using hexedit
+echo -e "\e[36mEditing $FILE in hexadecimal mode ...\e[0m"
+hexedit "$FILE"
+echo -e "\e[35m--------------------------------------------------\e[0m"
+fi
+CC=0
+read -rsp $'Press Enter to run ==> "Unzip" || Type "s + Enter " to skip and exit ...\n' key
+ if [[ "$key" == "s" ]]; then
+   CC=1
+  fi
+
+
+if [[ "$CC" != "1" ]]; then
+# Unzip any extracted archives
+echo -e "\e[36mExtracting any extracted archives ...\e[0m"
+# Extracted files directory name
+DIR_NAME="$(dirname "$FILE")/$(basename "${FILE%.*}").stegrazArchive"
+
+# Create the directory
+mkdir -p "$DIR_NAME"
+
+# Unzip any extracted archives
+unzip -FF "$FILE" -d "$DIR_NAME" ;
+echo "im running : unzip -FF "$FILE" -d $DIR_NAME "
+unrar x "$FILE" "$DIR_NAME" ;
+echo -e "\e[35mYour Archive can be found in $DIR_NAME \e[0m"
+echo -e "\e[35m--------------------------------------------------\e[0m"
+fi
+CC=0

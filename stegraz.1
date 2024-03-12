@@ -1,0 +1,50 @@
+.ll 200
+\fBstegraz(1)                                                   User Commands Manual                                                  stegraz(1)\fP
+
+\fBNAME\fP
+       \fBstegraz\fP - Steganography static analysis Tool 
+
+\fBSYNOPSIS\fP
+       stegraz [ options ] <file> [ grep_argument ]
+
+\fBDESCRIPTION\fP
+       \fBstegraz\fP is a steganography static analysis tool, gathers most known commands to analyze files for hidden data. 
+       It supports various file formats (not just images) and provides a range of features ( to save time)
+
+       Features include:
+       - Opening image files in Eye of GNOME for visual inspection.
+       - Determining the file type of the input file.
+       - Extracting strings from the file and filtering using grep (optional).
+       - Extracting metadata from the file using exiftool.
+       - Extracting embedded files using binwalk -e.
+       - Editing the file in hexadecimal mode using hexedit.
+       - Extracting and fixing corrupted archives. ( ex: unzip -FF )
+       - Decrypting strings encoded in all Bases (-58) Simultaneously (Base16, Base32, Base36, Base62, Base64, Base85, Base91).
+
+\fBOPTIONS\fP
+       -h, --help ( or man ) 
+              Display this manual page.
+
+       -b, --decrypt <string>
+              Decrypt a string using various base encoding schemes and save result in a temporary file.
+
+\fBEXAMPLES\fP
+       Analyze an image file:
+       stegraz image.png
+       ( it will display what feature will be applied, press "ENTER" to apply it or "S+ENTER" to skip to the next feature.
+
+       Extract strings from a file and filter for a specific pattern:
+       stegraz secret.txt "flag format"
+
+       Decrypt an encoded string in different bases in case you dont know from which base you should exactly decode:
+       stegraz -b 5KbKxfSVxmrwMYVWsoLrPcUWKjjk5rWiJ5vFpX7cqctbZTfX
+
+\fBNOTES\fP
+       - Some features may require external tools to be installed, such as Eye of GNOME, hexedit, binwalk, exiftool, unzip, and unrar.
+       - while decoding the bases use double quotes "" instead of single quotes '' as they might be sometimes part of same base encodings.
+
+\fBAUTHOR\fP
+       - Razan AKA: N1L0V3R || contact if you have any suggestions ==> https://github.com/shadow1004/ || Discord ID : bye0o._.ra
+  
+\fB                                                                  12 March 2024                                                  stegraz(1)\fP
+
