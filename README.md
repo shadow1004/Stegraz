@@ -4,7 +4,7 @@
 Stegraz is a steganography static analysis tool, gathers most known commands to analyze files for hidden data.
 Features here arent new, it's just for time saving + so you don't forget to try/run any command/tool while analyzing. <br>
     
-> This tool is made with bash script and mostly for ubuntu, also it depende on some previous installed basic tools
+> This tool is made with bash script and mostly for ubuntu, also it depende on some previous installed basic tools (needs dependencies)
    
 
 ## Manual
