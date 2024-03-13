@@ -19,7 +19,7 @@
        - Extracting embedded files using binwalk -e.
        - Editing the file in hexadecimal mode using hexedit.
        - Extracting and fixing corrupted archives. ( ex: unzip -FF )
-       - Decrypting strings encoded in all Bases (-58) Simultaneously (Base16, Base32, Base36, Base62, Base64, Base85, Base91).
+       - Decrypting strings encoded in many different bases Simultaneously (Base16, Base32, Base62, Base64, Base85, Base91).
 
 \fBOPTIONS\fP
        -h, --help ( or man ) 
@@ -37,7 +37,7 @@
        stegraz secret.txt "flag format"
 
        Decrypt an encoded string in different bases in case you dont know from which base you should exactly decode:
-       stegraz -b 5KbKxfSVxmrwMYVWsoLrPcUWKjjk5rWiJ5vFpX7cqctbZTfX
+       stegraz -b "AU%d'E,9).De:,&ARfXhBl7Q+GA2/4+EMX9B6%F,"
 
 \fBNOTES\fP
        - Some features may require external tools to be installed, such as Eye of GNOME, hexedit, binwalk, exiftool, unzip, and unrar.
