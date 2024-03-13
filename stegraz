@@ -26,9 +26,6 @@ echo -e "\e[35m--------------------------------------------------\e[0m" >> "$out
 # Base32
 echo "- base32:" $(echo "$2" | base32 -d 2>/dev/null ) >> "$output_file" 
 echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
-# Base36
-echo "- base36:" $(echo "$2" | tr '[:upper:]' '[:lower:]' | tr -d '\n' | bc 2>/dev/null) >> "$output_file" 
-echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
 # Base62
 echo "- base62:" $(echo "$2" | base62 -d 2>/dev/null) >> "$output_file"
 echo -e "\e[35m--------------------------------------------------\e[0m" >> "$output_file"
