@@ -25,7 +25,7 @@ To make the manual page work on your systeme you should follow next steps :  <br
 To run the tool from anywhere on your computer you should follow next steps :  <br>
 
 ` 1- install the tools's script : stegraz ` <br>
-` 2- chmod 777 stegraz ` <br>
+` 2- chmod 755 stegraz ` <br>
 ` 3- sudo mv stegraz /usr/bin`  <br> 
 
 My tool actually is not perfect yet it helps me, so i wanted to share it with the community maybe it helps everyone as well, so if you ever notice something i can add or i should change
