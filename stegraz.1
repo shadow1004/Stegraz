@@ -9,7 +9,7 @@
 
 \fBDESCRIPTION\fP
        \fBstegraz\fP is a steganography static analysis tool, gathers most known commands to analyze files for hidden data. 
-       It supports various file formats (not just images) and provides a range of features ( to save time)
+       It supports various file formats (not just images) and provides a range of features (to save time)
 
        Features include:
        - Opening image files in Eye of GNOME for visual inspection.
@@ -18,11 +18,11 @@
        - Extracting metadata from the file using exiftool.
        - Extracting embedded files using binwalk -e.
        - Editing the file in hexadecimal mode using hexedit.
-       - Extracting and fixing corrupted archives. ( ex: unzip -FF )
+       - Extracting and fixing corrupted archives. (ex: unzip -FF)
        - Decrypting strings encoded in many different bases Simultaneously (Base16, Base32, Base62, Base64, Base85, Base91).
 
 \fBOPTIONS\fP
-       -h, --help ( or man ) 
+       -h, --help, -help, man
               Display this manual page.
 
        -b, --decrypt <string>
@@ -31,7 +31,7 @@
 \fBEXAMPLES\fP
        Analyze an image file:
        stegraz image.png
-       ( it will display what feature will be applied, press "ENTER" to apply it or "S+ENTER" to skip to the next feature.
+       (it will display what feature will be applied, press "ENTER" to apply it or "S+ENTER" to skip to the next feature).
 
        Extract strings from a file and filter for a specific pattern:
        stegraz secret.txt "flag format"
